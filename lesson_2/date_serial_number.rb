@@ -2,44 +2,28 @@
  # Найти порядковый номер даты, начиная отсчет с начала года.
  #
 def date_definition
-  puts 'Введите число:'
-  day = gets.chomp.to_i
-  puts day
+  mos = {
+    1=>31, 2=>28, 3=>31, 4=>30, 5=>31, 6=>30, 7=>31, 8=>31, 9=>30, 10=>31, 11=>30, 12=>31
+  }
 
-  puts 'Введите месяц(название на русском либо английском):'
-  month = gets.chomp.downcase
+  puts 'Введите число:'
+  user_day = gets.to_i
+
+  puts 'Введите номер месяца:'
+  puts user_month = gets.to_i
 
   puts 'Введите год(4 цифры):'
-  year = gets.chomp.to_i
-
-  # определяем количество дней, прошедших с начала года, без учета високосности года
-  #
-  case month
-  when 'январь', 'january'      then months_correction = 0
-  when 'февраль', 'february'    then months_correction = 31
-  when 'март', 'march'          then months_correction = 59
-  when 'апрель', 'april'        then months_correction = 89
-  when 'май', 'may'             then months_correction = 120
-  when 'июнь',  'june'          then months_correction = 150
-  when 'июль', 'july'           then months_correction = 181
-  when 'август', 'august'       then months_correction = 212
-  when 'сентябрь', 'september'  then months_correction = 242
-  when 'октябрь', 'october'     then months_correction = 273
-  when 'ноябрь',  'november'    then months_correction = 303
-  when 'декабрь', 'december'    then months_correction = 332
-  end
+  user_year = gets.to_i
 
   # вносим поправку на високосность
   #
-  if  year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)
-    leap_correction = 1
-  else
-    leap_correction = 0
+  if  user_year % 400 == 0 || (user_year % 4 == 0 && user_year % 100 != 0)
+    mos[2] = 29
   end
 
   # окончательный подсчет порядкового номера дня
   #
-  day_number = day + months_correction + leap_correction
+  day_number = mos.values.take(user_month - 1).sum + user_day
   puts " Номер дня в году: #{day_number}"
 end
 date_definition
