@@ -23,7 +23,6 @@ end
 
 class Train
   attr_reader :type, :speed, :size, :current_route, :current_station
-  attr_accessor :stations
 
   module TYPES
     PASSENGER = 'passenger'
@@ -65,43 +64,49 @@ class Train
   end
 
   def next_index
-    @next_index = @current_route.stations.index(@current_station) + 1
+    if @current_station != @current_route.stations.last
+      @next_index = @current_route.stations.index(@current_station) + 1
+    else
+      return false
+    end
   end
 
   def previous_index
-    @previous_index = @current_route.stations.index(@current_station) - 1
+    if @current_station != @current_route.stations.first
+      @previous_index = @current_route.stations.index(@current_station) - 1
+    else
+      return false
+    end
   end
 
   def move_forward
-    if @current_station == @current_route.stations.last
-      puts "Вы прибыли в пункт назначения"
+    if next_index
+      @current_station = @current_route.stations[next_index]
     else
-    # next_index = @current_route.stations.index(@current_station) + 1
-    @current_station = @current_route.stations[next_index]
     end
   end
 
   def move_backward
-    if @current_station == @current_route.stations.first
-      puts "Вы вернулись в пункт отправки"
+    if previous_index
+      @current_station = @current_route.stations[previous_index]
     else
-    @current_station = @current_route.stations[previous_index]
+      return false
     end
   end
 
   def next_station
     if @current_station == @current_route.stations.last
-      puts "Конечная станция"
+      return false
     else
-    @next_station = @current_route.stations[next_index]
+      @next_station = @current_route.stations[next_index]
     end
   end
 
   def previous_station
     if @current_station == @current_route.stations.first
-      puts "Станция отправления"
+      return false
     else
-    @previous_station = @current_route.stations[previous_index]
+      @previous_station = @current_route.stations[previous_index]
     end
   end
 end
@@ -121,7 +126,7 @@ class Route
     if station != @stations.first && station != @stations.last
       @stations.delete(station)
     else
-      puts 'Начальную и конечную станцию удалить нельзя'
+      return false
     end
   end
 end
