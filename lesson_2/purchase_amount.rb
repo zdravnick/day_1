@@ -24,3 +24,4 @@ loop do
   item_sum = item_price * item_quantity
   items[item_name] = {price: item_price, quantity: item_quantity, sum: item_sum}
 end
+
